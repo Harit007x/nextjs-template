@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Link from "next/link";
 
 // ---------------------- Zod Schema ----------------------
 
@@ -78,7 +79,10 @@ export default function SignupPage() {
         </div>
 
         {/* RIGHT SECTION */}
-        <div className="flex flex-col items-center justify-center bg-background px-6 py-10 min-h-screen">
+        <div className="relative flex flex-col items-center justify-center bg-background px-6 py-10 min-h-screen">
+          <Link href="/login" className="absolute top-4 right-4 text-sm text-foreground hover:text-foreground hover:bg-muted rounded-md px-3 py-2 transition tracking-wide">
+            Login
+          </Link>
           <div className="w-full max-w-sm space-y-4">
             {/* Header */}
             <div className="text-left space-y-1">
