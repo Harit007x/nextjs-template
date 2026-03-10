@@ -5,6 +5,7 @@ import { XIcon } from "lucide-react"
 import { Dialog as SheetPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
+import { useDirection } from "@/components/ui/direction"
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />
@@ -54,6 +55,8 @@ function SheetContent({
   side?: "top" | "right" | "bottom" | "left"
   showCloseButton?: boolean
 }) {
+  const dir = useDirection()
+
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -62,9 +65,17 @@ function SheetContent({
         className={cn(
           "fixed z-50 flex flex-col gap-4 bg-background shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:animate-in data-[state=open]:duration-500",
           side === "right" &&
-            "inset-y-0 end-0 h-full w-3/4 border-s data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm",
+            "inset-y-0 end-0 h-full w-3/4 border-s sm:max-w-sm",
+          side === "right" &&
+            (dir === "rtl"
+              ? "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left"
+              : "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right"),
           side === "left" &&
-            "inset-y-0 start-0 h-full w-3/4 border-e data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm",
+            "inset-y-0 start-0 h-full w-3/4 border-e sm:max-w-sm",
+          side === "left" &&
+            (dir === "rtl"
+              ? "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right"
+              : "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left"),
           side === "top" &&
             "inset-x-0 top-0 h-auto border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top",
           side === "bottom" &&

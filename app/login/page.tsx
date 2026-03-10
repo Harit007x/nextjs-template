@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import Link from "next/link";
+import { Icons } from "@/components/icons";
 
 // ---------------------- Zod Schema ----------------------
 const LoginSchema = z.object({
@@ -29,7 +31,12 @@ const LoginSchema = z.object({
 type LoginFormValues = z.infer<typeof LoginSchema>;
 
 export default function LoginPage() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  // Default credentials for demo
+  const DEFAULT_EMAIL = "admin@axoracomp.com";
+  const DEFAULT_PASSWORD = "admin123";
 
   // ---------------------- React Hook Form ----------------------
   const {
@@ -41,8 +48,8 @@ export default function LoginPage() {
   } = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: DEFAULT_EMAIL,
+      password: DEFAULT_PASSWORD,
       rememberMe: false,
     },
   });
@@ -56,6 +63,10 @@ export default function LoginPage() {
     if (savedEmail) {
       setValue("email", savedEmail);
       setValue("rememberMe", true);
+    } else {
+      // Set default email if no saved email exists
+      setValue("email", DEFAULT_EMAIL);
+      setValue("password", DEFAULT_PASSWORD);
     }
   }, [setValue]);
 
@@ -72,7 +83,11 @@ export default function LoginPage() {
 
       console.log("Login values:", values);
 
-      // await loginMutation.mutateAsync(values)
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Redirect to admin dashboard after successful login
+      router.push("/admin/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
     } finally {
@@ -104,6 +119,25 @@ export default function LoginPage() {
               </p>
               <p className="text-sm font-light text-foreground opacity-80">
                 Please sign in to your account to continue
+              </p>
+            </div>
+
+            {/* Demo credentials hint */}
+            <div className="bg-muted/50 p-3 rounded-md border border-border">
+              <p className="text-xs text-muted-foreground">
+                <span className="font-semibold">Demo Credentials:</span>
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Email:{" "}
+                <span className="font-mono bg-background px-1 py-0.5 rounded">
+                  {DEFAULT_EMAIL}
+                </span>
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Password:{" "}
+                <span className="font-mono bg-background px-1 py-0.5 rounded">
+                  {DEFAULT_PASSWORD}
+                </span>
               </p>
             </div>
 
@@ -151,9 +185,12 @@ export default function LoginPage() {
                   <Label>Remember me</Label>
                 </div>
 
-                <span className="hover:underline cursor-pointer">
+                <Link
+                  href="/forgot-password"
+                  className="text-sm text-primary hover:underline"
+                >
                   Forgot Password?
-                </span>
+                </Link>
               </div>
 
               {/* Submit */}
@@ -161,7 +198,7 @@ export default function LoginPage() {
                 <Button className="w-full" type="submit" disabled={isLoading}>
                   {isLoading ? (
                     <>
-                      <span className="mr-2 h-4 w-4 animate-spin">⚪</span>
+                      <Icons.spinner className="h-4 w-4 animate-spin" />
                       Logging in...
                     </>
                   ) : (

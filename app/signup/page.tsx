@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -80,9 +80,9 @@ export default function SignupPage() {
 
         {/* RIGHT SECTION */}
         <div className="relative flex flex-col items-center justify-center bg-background px-6 py-10 min-h-screen">
-          <Link href="/login" className="absolute top-4 right-4 text-sm text-foreground hover:text-foreground hover:bg-muted rounded-md px-3 py-2 transition tracking-wide">
+          {/* <Link href="/login" className="absolute top-4 right-4 text-sm text-foreground hover:text-foreground hover:bg-muted rounded-md px-3 py-2 transition tracking-wide">
             Login
-          </Link>
+          </Link> */}
           <div className="w-full max-w-sm space-y-4">
             {/* Header */}
             <div className="text-left space-y-1">
@@ -186,6 +186,17 @@ export default function SignupPage() {
                   "Sign Up"
                 )}
               </Button>
+
+                {/* Back to Login */}
+                <div className="text-center">
+                    <Link
+                        href="/login"
+                        className="inline-flex items-center text-sm text-primary hover:underline gap-1"
+                    >
+                        <Icons.chevronLeft className="h-4 w-4" />
+                        Back to Login
+                    </Link>
+                </div>
             </form>
           </div>
         </div>
